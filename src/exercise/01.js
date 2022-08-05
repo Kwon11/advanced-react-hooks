@@ -13,7 +13,7 @@ function Counter({initialCount = 0, step = 1}) {
 
   const [state, changeCount] = React.useReducer(
     countReducer,
-    {count: initialCount},
+    { count: initialCount },
   );
   const { count } = state;
   // preferable when you have complex state that
