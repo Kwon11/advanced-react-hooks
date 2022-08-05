@@ -17,6 +17,13 @@ function Counter({initialCount = 0, step = 1}) {
     }
   };
 
+  const initializer = (initialStatePassedIntoComponentFromPropsAndIntoTheReducer) => {
+    return {
+      ...initialStatePassedIntoComponentFromPropsAndIntoTheReducer
+      // "other stuff" that isnt in props, such as default values decided by this component
+      // would go here
+    }
+  }
   const [state, dispatch] = React.useReducer(
     countReducer,
     { count: initialCount },
