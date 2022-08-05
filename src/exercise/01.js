@@ -8,13 +8,16 @@ function Counter({initialCount = 0, step = 1}) {
   // 💰 React.useReducer(countReducer, initialCount)
   // const [count, setCount] = React.useState(initialCount)
   const countReducer = (currentState, valuePassedToSetCount) => {
-    if ( typeof valuePassedToSetCount === 'function') {
-      return { ...currentState, ...valuePassedToSetCount(currentState)}
+    switch(valuePassedToSetCount.type) {
+      case 'INCREMENT':
+          return { ...currentState, count: currentState.count + valuePassedToSetCount.step };
+      default:
+          console.log('we hit the default case thats a problem');
+          throw new Error();
     }
-    return {count: currentState.count + valuePassedToSetCount};
   };
 
-  const [state, setState] = React.useReducer(
+  const [state, dispatch] = React.useReducer(
     countReducer,
     { count: initialCount },
   );
@@ -30,7 +33,7 @@ function Counter({initialCount = 0, step = 1}) {
   // changes to the next two lines of code! Remember:
   // The 1st argument is called "state" - the current value of count
   // The 2nd argument is called "newState" - the value passed to setCount
-  const increment = () => setState((currentState) => ({ count: currentState.count + step }));
+  const increment = () => dispatch({ type: 'INCREMENT', step });
   return <button onClick={increment}>{count}</button>
 }
 
