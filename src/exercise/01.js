@@ -7,11 +7,14 @@ function Counter({initialCount = 0, step = 1}) {
   // 🐨 replace React.useState with React.useReducer.
   // 💰 React.useReducer(countReducer, initialCount)
   // const [count, setCount] = React.useState(initialCount)
-  const countReducer = (state, valuePassedToSetCount) => {
-    return {count: state.count + valuePassedToSetCount};
+  const countReducer = (currentState, valuePassedToSetCount) => {
+    if ( typeof valuePassedToSetCount === 'function') {
+      return { ...currentState, ...valuePassedToSetCount(currentState)}
+    }
+    return {count: currentState.count + valuePassedToSetCount};
   };
 
-  const [state, changeCount] = React.useReducer(
+  const [state, setState] = React.useReducer(
     countReducer,
     { count: initialCount },
   );
@@ -27,7 +30,7 @@ function Counter({initialCount = 0, step = 1}) {
   // changes to the next two lines of code! Remember:
   // The 1st argument is called "state" - the current value of count
   // The 2nd argument is called "newState" - the value passed to setCount
-  const increment = () => changeCount(step)
+  const increment = () => setState((currentState) => ({ count: currentState.count + step }));
   return <button onClick={increment}>{count}</button>
 }
 
